@@ -1,15 +1,19 @@
+import org.omg.CORBA.Object;
+
 import javax.swing.text.StyledEditorKit;
 
-public class Array {
+public class Array<E> {
 
     // 私有成员变量，禁止从外部直接获取数据
-    private int[] data;
+    private E[] data;
     private int size;
 
 
     // 构造函数，传入数组含量构造array
+    // 泛型无法直接new创建(历史问题),需要先建立Object. java中，任意类都是Object的子类
+    // 然后再强制类型转换为E
     public Array(int capacity) {
-        data = new int[capacity];
+        data = (E[]) new Object[capacity];
         size = 0;
     }
 
@@ -33,22 +37,8 @@ public class Array {
         return size == 0;
     }
 
-    // 向所有元素后添加新元素
-    public void addLast(int e) throws IllegalAccessException {
-//        if (size == data.length) {
-//            throw new IllegalAccessException("Array is full, addLast failed");
-//        }
-//        data[size] = e;
-//        size++;
-        add(size, e);
-    }
-
-    public void addFirst(int e) throws IllegalAccessException {
-        add(0, e);
-    }
-
     // 向数组指定位置index添加新元素
-    public void add(int index, int e) throws IllegalAccessException {
+    public void add(int index, E e) throws IllegalAccessException {
 
         if (size == data.length) {
             throw new IllegalAccessException("Array is full, addLast failed");
@@ -57,15 +47,32 @@ public class Array {
             throw new IllegalAccessException("Array is full, require index < size");
         }
 
+        System.out.println(size);
         for (int i = size - 1; i >= index; i--) {
             data[i + 1] = data[i];
         }
+        System.out.println(e);
         data[index] = e;
         size++;
     }
 
+
+    // 向所有元素后添加新元素
+    public void addLast(E e) throws IllegalAccessException {
+//        if (size == data.length) {
+//            throw new IllegalAccessException("Array is full, addLast failed");
+//        }
+//        data[size] = e;
+//        size++;
+        add(size, e);
+    }
+
+    public void addFirst(E e) throws IllegalAccessException {
+        add(0, e);
+    }
+
     // 获取index索引位置元素
-    int get(int index) throws IllegalAccessException {
+    public E get(int index) throws IllegalAccessException {
         if (index < 0 || index > size) {
             throw new IllegalAccessException("Get failed, index is illegal");
         }
@@ -74,7 +81,7 @@ public class Array {
 
 
     // 修改index位置元素为e
-    void set(int index, int e) throws IllegalAccessException {
+    public void set(int index, E e) throws IllegalAccessException {
         if (index < 0 || index > size) {
             throw new IllegalAccessException("Get failed, index is illegal");
         }
@@ -82,9 +89,14 @@ public class Array {
     }
 
     // 查找数组中是否有元素e
-    public boolean contains(int e) {
+    public boolean contains(E e) {
         for (int i = 0; i < size; i++) {
-            if (data[i] == e) {
+//            if (data[i] == e) {
+//                return true;
+//            }
+            // 这里两个类对象进行值的比较，用的是equals。
+            // 而 == 是指引用比较
+            if (data[i].equals(e)) {
                 return true;
             }
         }
@@ -92,17 +104,51 @@ public class Array {
     }
 
     // 查找数组中元素e所在位置，如果不存在e，返回-1
-    public int find(int e) {
+    public int find(E e) {
         for (int i = 0; i < size; i++) {
-            if (data[i] == e) {
+//            if (data[i] == e) {
+//                return i;
+//            }
+            if (data[i].equals(e)) {
                 return i;
             }
         }
         return -1;
     }
 
+    // 删除元素，并返回被删除的元素
+    public E remove(int index) throws IllegalAccessException {
+        if (index < 0 || index > size) {
+            throw new IllegalAccessException("Get failed, index is illegal");
+        }
+        E ret = data[index];
+        for (int i = index + 1; i < size; i++) {
+            data[i - 1] = data[i];
+        }
+        size--;
+        data[size] = null; // 这里不手动将最后一个元素指向空的话，
+                            // 这个元素会一直存在。称之为loitering object。手动指向空的话
+                            // 会使其被java垃圾回收机制回收
+        return ret;
+    }
 
+    public E removeFirst() throws IllegalAccessException {
+        return remove(0);
+    }
 
+    public E removeLast() throws IllegalAccessException {
+        return remove(size  - 1);
+    }
+
+    public boolean removeElement(E e) throws IllegalAccessException {
+        int index = find(e);
+        if (index != -1) {
+            remove(index);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     // 覆盖父类的 obj.toString 方法. 调用System.our.println的时候，会调用此方法代替
     @Override
