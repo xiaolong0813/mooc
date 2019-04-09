@@ -62,6 +62,6 @@ public class ArrayStack<E> implements Stack<E> {
             }
         }
         res.append("] top");
-        return res.toString();
+        return res.toString();  // 注意这里的toString是StringBuilder类里面的，这里override的是String类里面的
     }
 }
