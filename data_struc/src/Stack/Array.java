@@ -1,6 +1,6 @@
-import org.omg.CORBA.Object;
+package Stack;
 
-import javax.swing.text.StyledEditorKit;
+import com.sun.xml.internal.ws.api.pipe.ThrowableContainerPropertySet;
 
 public class Array<E> {
 
@@ -12,6 +12,7 @@ public class Array<E> {
     // 构造函数，传入数组含量构造array
     // 泛型无法直接new创建(历史问题),需要先建立Object. java中，任意类都是Object的子类
     // 然后再强制类型转换为E
+    // 注意这里的Object是哪个jar包里的，应该用java.lang里面的
     public Array(int capacity) {
         data = (E[]) new Object[capacity];
         size = 0;
@@ -40,20 +41,30 @@ public class Array<E> {
     // 向数组指定位置index添加新元素
     public void add(int index, E e) throws IllegalAccessException {
 
-        if (size == data.length) {
-            throw new IllegalAccessException("Array is full, addLast failed");
-        }
         if (index < 0 || index > size) {
             throw new IllegalAccessException("Array is full, require index < size");
         }
 
-        System.out.println(size);
+        // 如果元素个数超过了capacity，进行扩容。
+        if (size == data.length) {
+//            throw new IllegalAccessException("Array is full, addLast failed");
+            // 这里的大小为原来两倍，对于性能比较合适。java的ArrayList为1.5
+            resize(2 * data.length);
+        }
+
         for (int i = size - 1; i >= index; i--) {
             data[i + 1] = data[i];
         }
-        System.out.println(e);
         data[index] = e;
         size++;
+    }
+
+    private void resize(int newCapacity) {
+        E[] newData = (E[]) new Object[newCapacity];
+        for (int i = 0; i < size; i++) {
+            newData[i] = data[i];
+        }
+        data = newData;
     }
 
 
@@ -77,6 +88,14 @@ public class Array<E> {
             throw new IllegalAccessException("Get failed, index is illegal");
         }
         return data[index];
+    }
+
+    public E getLast() throws IllegalAccessException {
+        return get(size - 1);
+    }
+
+    public E getFirst() throws IllegalAccessException {
+        return get(0);
     }
 
 
@@ -129,6 +148,13 @@ public class Array<E> {
         data[size] = null; // 这里不手动将最后一个元素指向空的话，
                             // 这个元素会一直存在。称之为loitering object。手动指向空的话
                             // 会使其被java垃圾回收机制回收
+
+        // 如果元素个数小到一定程度（整个容量的1/2），减容
+        // 用懒算法，为1/4的时候才减容，并且需要保证不能为零
+        if (size == data.length / 4 && data.length / 2 != 0) {
+            resize(data.length / 2);
+        }
+
         return ret;
     }
 
@@ -164,7 +190,7 @@ public class Array<E> {
         }
         res.append("]");
 
-        return res.toString();
+        return res.toString();  // 注意这里的toString是StringBuilder类里面的，这里override的是String类里面的
     }
 
 }
