@@ -90,6 +90,14 @@ public class Array<E> {
         return data[index];
     }
 
+    public E getLast() throws IllegalAccessException {
+        return get(size - 1);
+    }
+
+    public E getFirst() throws IllegalAccessException {
+        return get(0);
+    }
+
 
     // 修改index位置元素为e
     public void set(int index, E e) throws IllegalAccessException {
