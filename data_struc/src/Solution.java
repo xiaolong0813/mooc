@@ -66,6 +66,17 @@ public class Solution {
         return sum;
     }
 
+    class RecentCounter {
+
+        public RecentCounter() {
+
+        }
+
+        public int ping(int t) {
+
+        }
+    }
+
 
 
     public static void main(String[] args) throws IllegalAccessException {

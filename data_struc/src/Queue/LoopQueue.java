@@ -92,14 +92,15 @@ public class LoopQueue<E> implements Queue<E> {
     @Override
     public String toString() {
         StringBuilder res = new StringBuilder();
-        res.append("LoopQueue: size = %d, capacity = %d\n", size, getCapacity());
+        res.append(String.format("LoopQueue: size = %d, capacity = %d\n", size, getCapacity()));
         res.append("front [");
-//        for (int i = front; i != tail; i = (i + 1) / data.length) {
-//            res.append(data[i]);
-//            if ((i + 1) / data.length != tail) {
-//                res.append(", ");
-//            }
-//        }
+
+        for (int i = front; i != tail; i = (i + 1) % data.length) {
+            res.append(data[i]);
+            if ((i + 1) % data.length != tail) {
+                res.append(", ");
+            }
+        }
 
         res.append("] tail");
         return res.toString();  // 注意这里的toString是StringBuilder类里面的，这里override的是String类里面的
@@ -120,5 +121,4 @@ public class LoopQueue<E> implements Queue<E> {
             }
         }
     }
-
 }
