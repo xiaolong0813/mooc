@@ -66,16 +66,16 @@ public class Solution {
         return sum;
     }
 
-    class RecentCounter {
-
-        public RecentCounter() {
-
-        }
-
-        public int ping(int t) {
-
-        }
-    }
+//    class RecentCounter {
+//
+//        public RecentCounter() {
+//
+//        }
+//
+//        public int ping(int t) {
+//
+//        }
+//    }
 
 
 
