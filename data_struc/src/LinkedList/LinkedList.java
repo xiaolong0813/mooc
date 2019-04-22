@@ -94,6 +94,102 @@ public class LinkedList<E> {
         }
     }
 
+    // 删除第index个元素。并返回这个元素
+    // 同样这在链表中不是常规操作，做练习用
+    public E remove(int index) {
+        // 这里是获取元素，需要小于size
+        if (index < 0 || index >= size) {
+            throw new IllegalArgumentException("Remove failed. Illegal index");
+        }
+        else {
+            Node prev = dummyHead;
+            for (int i = 0; i < index; i++) {
+//                System.out.println(prev.e);
+                prev = prev.next;
+            }
+
+            // 这里需要返回被删除的节点，用retNode保存一下。注意要将retNode的next指向空
+            Node retNode = prev.next;
+            prev.next = retNode.next;
+            retNode.next = null;
+
+            // 记得管理size
+            size--;
+
+            return retNode.e;
+        }
+    }
+
+    // 获取第index个元素e
+    // 同样这在链表中不是常规操作，做练习用
+    public E get(int index) {
+        // 这里是获取元素，需要小于size
+        if (index < 0 || index >= size) {
+            throw new IllegalArgumentException("Get failed. Illegal index");
+        }
+
+        else {
+            // 这里从链表的第一个真正元素开始，而不是dummyHead，因为要找的就是每个元素，而不是
+            // 像插入一样找的是元素后面的元素。current代表当前元素
+            Node current = dummyHead.next;
+            for (int i = 0; i < index; i++) {
+                current = current.next;
+            }
+            return current.e;
+        }
+    }
+
+    // 获取链表第一个元素
+    public E getFirst() {
+        return get(0);
+    }
+
+    // 获取链表最后一个元素
+    public E getLast() {
+        return get(size - 1);
+    }
+
+    // 删除链表第一个元素
+    public E removeFirst() {
+        return remove(0);
+    }
+
+    // 删除链表最后一个元素
+    public E removeLast() {
+        return remove(size - 1);
+    }
+
+    // 修改第index位置的元素为e
+    // 同样这在链表中不是常规操作，做练习用
+    public void set(int index, E e) {
+        // 这里是找元素，需要小于size
+        if (index < 0 || index >= size) {
+            throw new IllegalArgumentException("Set failed. Illegal index");
+        }
+        else {
+            // 这里从链表的第一个真正元素开始，而不是dummyHead，因为要更新的就是每个元素，而不是
+            // 像插入一样找的是元素后面的元素。current代表当前元素
+            Node current = dummyHead.next;
+            for (int i = 0; i < index; i++) {
+                current = current.next;
+            }
+            current.e = e;
+        }
+    }
+
+    // 查找链表中是否有元素e.
+    // 这里没有索引，需要从头开始遍历
+    public boolean contains(E e) {
+        Node current = dummyHead.next;
+        while (current != null) {
+            if (current.e.equals(e)) {
+                return true;
+            }
+            current = current.next;
+        }
+        return false;
+    }
+
     // 链表头添加元素e
     public void addFirst(E e) {
 //        Node node = new Node(e);
@@ -105,14 +201,35 @@ public class LinkedList<E> {
 
         // 引入dummyHead之后，可以直接在0的位置添加。注意这里的0是dummyHead后一个元素
         add(0, e);
-
-        size++;
     }
 
     // 末尾添加e
     public void addLast(E e) {
         add(size, e);
     }
+
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        // while 循环写法
+//        Node current = dummyHead.next;
+//        while (current != null) {
+//            sb.append(current + "->");
+//            current = current.next;
+//        }
+
+        // for 循环写法
+        for (Node current = dummyHead.next; current != null; current = current.next) {
+            sb.append(current + "->");
+        }
+
+        sb.append("NULL. size is " + size);
+
+        return sb.toString();
+    }
+
 
 
 
