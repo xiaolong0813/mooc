@@ -30,8 +30,10 @@ public class testTime {
 
         int opCount = 100000;
 
+        // 对三种队列进行事件测试
         ArrayQueue<Integer>  arrayQueue = new ArrayQueue<Integer>();
         LoopQueue<Integer> loopQueue = new LoopQueue<Integer>();
+        LinkedListQueue<Integer> linkedListQueue = new LinkedListQueue<Integer>();
 
         double arrayTime = testQueue(arrayQueue, opCount);
         System.out.println("Time of ArrayQueue is: " + arrayTime + "s");
@@ -39,8 +41,12 @@ public class testTime {
         double loopTime = testQueue(loopQueue, opCount);
         System.out.println("Time of LoopQueue is: " + loopTime + "s");
 
-//        Time of ArrayQueue is: 2.949150002s
-//        Time of LoopQueue is: 0.010986291s
+        double LinkedTime = testQueue(linkedListQueue, opCount);
+        System.out.println("Time of LinkedQueue is: " + LinkedTime + "s");
 
+        // 这里ArrayQueue的时间复杂度为O(n2)，其他两个都是O(1)
+//        Time of ArrayQueue is: 2.849187158s
+//        Time of LoopQueue is: 0.012060834s
+//        Time of LinkedQueue is: 0.006723595s
     }
 }
