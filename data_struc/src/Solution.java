@@ -86,25 +86,25 @@ public class Solution {
     //    输出: 1->2->3->4->5
 
 //     Definition for singly-linked list.
-     public static class ListNode {
+     public class ListNode {
          int val;
          ListNode next;
          ListNode(int x) { val = x; }
 
-         // 加入转换数组为链表方法，便于测试提供链表
-         public ListNode arrayToLink(int[] array) {
+         // 链表节点的构造函数，使用array为参数，创建一个链表，便于测试提供链表
+         // 当前的ListNode为链表头节点
+         public ListNode (int[] array) {
              if (array == null || array.length == 0) {
                  throw new IllegalArgumentException("array cannot be empty");
              }
 
-             ListNode head = new ListNode(array[0]);
+             // 这里是当前这个ListNode的值，也就是第一个值array[0]
+             this.val = array[0];
              ListNode node = head;
              for (int i = 1; i < array.length; i++) {
                  node.next = new ListNode(array[i]);
                  node = node.next;
              }
-
-             return head;
          }
 
          public String toString(ListNode head) {
@@ -179,8 +179,9 @@ public class Solution {
                 prev = prev.next;
             }
         }
-        // 注意这里不能返回dummyHead
-        return head;
+        // 注意这里不能返回dummyHead,也不能返回head，因为如果只有一个元素且删除，dummyHead.next指向的是null
+        // 而这时head不为空
+        return dummayHead.next;
     }
 
 
@@ -199,7 +200,7 @@ public class Solution {
         Solution solution = new Solution();
         ListNode head = new ListNode(0).arrayToLink(array);
 
-        System.out.println(head.toString());
+        System.out.println();
 
 
 
