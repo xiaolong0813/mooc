@@ -1,6 +1,4 @@
-package Array;
-
-import javax.swing.text.StyledEditorKit;
+package Heap;
 
 public class Array<E> {
 
@@ -21,6 +19,15 @@ public class Array<E> {
     // this 指构造函数。无参数构造函数，默认容量为10
     public Array() {
         this(10);
+    }
+
+    // 传入一个数组，定义为一个Array
+    public Array(E[] list) {
+        data = (E[]) new Object[list.length];
+        for (int i = 0; i < list.length; i++) {
+            data[i] = list[i];
+        }
+        size = list.length;
     }
 
     // 获取元素数量
@@ -100,11 +107,21 @@ public class Array<E> {
 
 
     // 修改index位置元素为e
-    public void set(int index, E e) throws IllegalArgumentException {
+    public void set(int index, E e) {
         if (index < 0 || index > size) {
             throw new IllegalArgumentException("Get failed, index is illegal");
         }
         data[index] = e;
+    }
+
+    // 交换i和j位置的元素
+    public void swap(int i, int j) {
+        if (i < 0 || i >= size || j < 0 || j >= size)
+            throw new IllegalArgumentException("Index illegal");
+
+        E temp = data[i];
+        data[i] = data[j];
+        data[j] = temp;
     }
 
     // 查找数组中是否有元素e

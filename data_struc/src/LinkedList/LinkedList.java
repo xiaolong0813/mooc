@@ -5,6 +5,7 @@ public class LinkedList<E> {
     // 节点Node是私有类，只能在类内部访问
     // 内部变量是共有可以被LinkedList访问，不需要单独给其设置set和get
     private class Node {
+
         public E e;
         public Node next;
 
@@ -32,6 +33,7 @@ public class LinkedList<E> {
         }
     }
 
+    // 以下为链表类的成员变量
     // head为链表头，必须有。size为链表长度记录。设置为private，外部用户不能直接修改
     private Node head;
 
@@ -39,6 +41,7 @@ public class LinkedList<E> {
     private Node dummyHead;
     private int size;
 
+    // 以下为链表构造函数
     // 链表类构造函数.初始的时候为空。也可以使用其他构造函数，比如转换array
     public LinkedList() {
 //        head = null;
@@ -48,6 +51,7 @@ public class LinkedList<E> {
         size = 0;
     }
 
+    // 以下为链表成员函数
     // 获取链表中元素个数
     public int getSize() {
         return size;
@@ -157,6 +161,24 @@ public class LinkedList<E> {
     // 删除链表最后一个元素
     public E removeLast() {
         return remove(size - 1);
+    }
+
+    // 删除链表中的元素e
+    public void removeElement(E e) {
+        Node prev = dummyHead;
+
+        while (prev.next != null) {
+            if (prev.next.e.equals(e))
+                break;
+            prev = prev.next;
+        }
+
+        if (prev.next !=null) {
+            Node delNode = prev.next;
+            prev.next = delNode.next;
+            delNode.next = null;
+            size--;
+        }
     }
 
     // 修改第index位置的元素为e

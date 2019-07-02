@@ -4,7 +4,7 @@ public interface Queue<E> {
 
     int getSize();
     boolean isEmpty();
-    void enqueue(E e) throws IllegalAccessException;
-    E dequeue() throws IllegalAccessException;
-    E getFront() throws IllegalAccessException;
+    void enqueue(E e) throws IllegalArgumentException;
+    E dequeue() throws IllegalArgumentException;
+    E getFront() throws IllegalArgumentException;
 }

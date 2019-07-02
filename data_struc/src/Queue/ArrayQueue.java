@@ -25,17 +25,17 @@ public class ArrayQueue<E> implements Queue<E> {
     }
 
     @Override
-    public void enqueue(E e) throws IllegalAccessException {
+    public void enqueue(E e) throws IllegalArgumentException {
         array.addLast(e);
     }
 
     @Override
-    public E dequeue() throws IllegalAccessException {
+    public E dequeue() throws IllegalArgumentException {
         return array.removeFirst();
     }
 
     @Override
-    public E getFront() throws IllegalAccessException {
+    public E getFront() throws IllegalArgumentException {
         return array.getFirst();
     }
 
@@ -47,7 +47,7 @@ public class ArrayQueue<E> implements Queue<E> {
         for (int i = 0; i < array.getSize(); i++) {
             try {
                 res.append(array.get(i));
-            } catch (IllegalAccessException e) {
+            } catch (IllegalArgumentException e) {
                 e.printStackTrace();
             }
             if (i != array.getSize() - 1) {
@@ -58,7 +58,7 @@ public class ArrayQueue<E> implements Queue<E> {
         return res.toString();  // 注意这里的toString是StringBuilder类里面的，这里override的是String类里面的
     }
 
-    public static void main(String[] args) throws IllegalAccessException {
+    public static void main(String[] args) throws IllegalArgumentException {
 
         ArrayQueue<Integer> arrayQueue = new ArrayQueue<Integer>();
 

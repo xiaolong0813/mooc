@@ -55,7 +55,7 @@ public class LinkedListQueue<E> implements Queue<E> {
     }
 
     @Override
-    public void enqueue(E e) throws IllegalAccessException {
+    public void enqueue(E e) {
         // 如果tail为空，说明链表没有元素，则入队的这个就是tail位置元素，而head也指向这个
         if (tail == null) {
             tail = new Node(e);
@@ -70,7 +70,7 @@ public class LinkedListQueue<E> implements Queue<E> {
     }
 
     @Override
-    public E dequeue() throws IllegalAccessException {
+    public E dequeue() {
         // 如果为空，不能出队
         if (isEmpty()){
             throw new IllegalArgumentException("Cannot dequeue from an empty queue");
@@ -94,7 +94,7 @@ public class LinkedListQueue<E> implements Queue<E> {
     }
 
     @Override
-    public E getFront() throws IllegalAccessException {
+    public E getFront() throws IllegalArgumentException {
         // 如果为空，不能出队
         if (isEmpty()){
             throw new IllegalArgumentException("Cannot dequeue from an empty queue");
@@ -117,6 +117,21 @@ public class LinkedListQueue<E> implements Queue<E> {
         sb.append("Null tail");
 
         return sb.toString();
+    }
+
+    public static void main(String[] args) throws IllegalArgumentException {
+
+        LinkedListQueue<Integer> linkedListQueue = new LinkedListQueue<Integer>();
+
+        for (int i = 0; i < 10; i++) {
+            linkedListQueue.enqueue(i);
+            System.out.println(linkedListQueue);
+
+            if (i % 3 == 2) {
+                linkedListQueue.dequeue();
+                System.out.println(linkedListQueue);
+            }
+        }
     }
 
 }

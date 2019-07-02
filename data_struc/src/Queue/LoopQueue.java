@@ -43,7 +43,7 @@ public class LoopQueue<E> implements Queue<E> {
     }
 
     @Override
-    public void enqueue(E e) throws IllegalAccessException {
+    public void enqueue(E e) throws IllegalArgumentException {
         // 队列满的标志是只剩下一个空位
         if ((tail + 1) % data.length == front ) {
             resize(this.getCapacity() * 2);
@@ -65,10 +65,10 @@ public class LoopQueue<E> implements Queue<E> {
     }
 
     @Override
-    public E dequeue() throws IllegalAccessException {
+    public E dequeue() throws IllegalArgumentException {
 
         if (isEmpty()){
-            throw new IllegalAccessException("Cannot dequeue from empty queue");
+            throw new IllegalArgumentException("Cannot dequeue from empty queue");
         }
         E ret = data[front];
         data[front] = null;
@@ -82,9 +82,9 @@ public class LoopQueue<E> implements Queue<E> {
     }
 
     @Override
-    public E getFront() throws IllegalAccessException {
+    public E getFront() throws IllegalArgumentException {
         if (isEmpty()) {
-            throw new IllegalAccessException("Empty");
+            throw new IllegalArgumentException("Empty");
         }
         return data[front];
     }
@@ -107,7 +107,7 @@ public class LoopQueue<E> implements Queue<E> {
     }
 
 
-    public static void main(String[] args) throws IllegalAccessException {
+    public static void main(String[] args) throws IllegalArgumentException {
 
         LoopQueue<Integer> arrayQueue = new LoopQueue<Integer>();
 
