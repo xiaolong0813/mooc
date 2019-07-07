@@ -8,6 +8,7 @@ public class Q347_java_PQ {
 
 // 1. java的PriorityQueue是最小堆，所以需要改变判断标准
     // （由于使用了匿名类中的变量捕获直接比较方法中的变量，这个Freq类不再需要）
+    // private class Freq implements Comparable<Freq>{
     private class Freq{
         int e;
         int freq;
