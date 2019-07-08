@@ -25,11 +25,11 @@ public class SortTestHelper<T extends Comparable<T>> {
 //        random.setSeed(System.currentTimeMillis());
 
         for (int i = 0; i < n; i++) {
-            nums[i] = random.nextInt(rangeR - rangeL + 1) + rangeL;
+//            nums[i] = random.nextInt(rangeR - rangeL + 1) + rangeL;
             // 或者用下面也可以。后面算出来的是double类型，先用(int)转换为int类型，然后由于
             // nums是Integer[]类型，前面加上new Integer建立新对象。不加也可以，因为Integer是int
             // 的包装类
-//             nums[i] = new Integer((int)(Math.random() * (rangeR - rangeL + 1) + rangeL));
+             nums[i] = (int)(Math.random() * (rangeR - rangeL + 1) + rangeL);
         }
         return nums;
     }

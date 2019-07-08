@@ -24,7 +24,7 @@ public class Main {
 //
 //        Arrays.stream(students).forEach(student -> System.out.println(student));
 
-        int n = 100000;
+        int n = 10000;
         SortTestHelper helper = new SortTestHelper();
         Integer[] test_random1 = helper.generateRandomArray(n, 0, n);
         Integer[] test_random2 = test_random1.clone();

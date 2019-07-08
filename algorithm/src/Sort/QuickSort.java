@@ -36,8 +36,8 @@ public class QuickSort {
 
         // 优化二，不要每次用第一个的值作为比较的基准。对于近乎有序数组会退化为O(n2)级别复杂度
         // 而是选择随机一个元素作为基准。此时复杂度数学期望是O(nlogn)
-        Random random = new Random();
-        int randomIndex = random.nextInt(r - l + 1) + l;
+//        Random random = new Random();
+        int randomIndex = (int)(Math.random() * (r - l + 1) + l);
         swap(arr, l, randomIndex);
 
         // 将第一个和随机索引的元素交换，然后下面依然和第一个比较即可
