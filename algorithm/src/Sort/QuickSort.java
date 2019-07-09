@@ -54,6 +54,8 @@ public class QuickSort {
         // 优化三：partition不再从一端开始，而是两端同时扫描。两端都可以保存等于基值的元素，
         // 避免把等于基值的元素都放在一边。
         // 注意这里不是两边同步遍历，而是两端找到需要交换的元素停止。交换后再往下遍历
+        // i 和 j的取值满足初始的两个数组都是空的。这里i指的是查看的下一个元素，所以i端是开
+        // 区间，i为L + 1的时候数组初始为空，满足条件
         // 满足arr[l + 1...i) <= first, arr[j+1, r] >= first
         int i = l + 1, j = r;
         while (true) {
@@ -65,7 +67,6 @@ public class QuickSort {
             i++;
             j--;
         }
-
         swap(arr, l, j);
         return j;
     }

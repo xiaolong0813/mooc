@@ -27,35 +27,22 @@ public class QuickSort3Ways {
         swap(arr, l, randomIndex);
 
         Comparable first = arr[l];
-        // lt = l, 为了保证arr[l+1, lt]<v，此时为空，满足条件
-        //
-        int i = l + 1, lt = l, gt = r;
+        // 需要保证arr[l+1, lt]的值小于v，arr[gt, r]的值大于v
+        // lt = l, 保证初始数组为空，满足条件
+        // gt = r + 1，保证初始数组为空，满足条件
+        int i = l + 1, lt = l, gt = r + 1;
         while (i < gt) {
-            while (arr[i].compareTo(first) == 0) i++;
-            while (arr[gt].compareTo(first) > 0) gt--;
-
-            if (arr[i].compareTo(first) < 0) {
-                swap(arr, i, lt + 1);
+            if (arr[i].compareTo(first) == 0)
                 i++;
+            else if (arr[i].compareTo(first) < 0) {
+                swap(arr, i, lt + 1);
                 lt++;
+                i++;
             }
             else if (arr[i].compareTo(first) > 0) {
                 swap(arr, i, gt - 1);
                 gt--;
             }
-            if (arr[gt].compareTo(first) == 0){
-                swap(arr, gt, i);
-                i++;
-            }
-            else if (arr[gt].compareTo(first) < 0) {
-                swap(arr, gt, lt + 1);
-                lt++;
-            }
-
-
-//            else {
-//                i++;
-//            }
         }
         swap(arr, l, lt);
 

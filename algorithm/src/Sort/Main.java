@@ -33,6 +33,8 @@ public class Main {
         Integer[] test_random5 = test_random1.clone();
         LinkedListMergeSort testList_random = helper.generateRandomLinkedList(n, 0, n);
         Integer[] test_random6 = test_random1.clone();
+        Integer[] test_random7 = test_random1.clone();
+
 
         Integer[] test_nearlyRandom1 = helper.generateNearlyOrderedArray(n, 100);
         Integer[] test_nearlyRandom2 = test_nearlyRandom1.clone();
@@ -41,6 +43,8 @@ public class Main {
         Integer[] test_nearlyRandom5 = test_nearlyRandom1.clone();
         LinkedListMergeSort testList_nearly = helper.generateNearlyOrderedLinkedList(n, 100);
         Integer[] test_nearlyRandom6 = test_nearlyRandom1.clone();
+        Integer[] test_nearlyRandom7 = test_nearlyRandom1.clone();
+
 
 
 
@@ -59,6 +63,8 @@ public class Main {
         helper.testSort("Sort.MergeSort", "sortBU", test_random5);   // 0.007s
         helper.testSort("Sort.QuickSort", "sort", test_random6);   // 0.01s 改进后(随机基准) -> 0.023s 再次改进(双路) -> 0.015s
 //        helper.testSort(testList_random);   // 0.617s
+        helper.testSort("Sort.QuickSort3Ways", "sort", test_random7); // 0.02 但对于范围较小的随机数组，即重复元素很多
+                                                                                                 // 的情况下，这种方法速度最快，因为迭代的过程中不对重复元素进行排序
 
 
         System.out.println();
@@ -74,6 +80,8 @@ public class Main {
         helper.testSort("Sort.MergeSort", "sortBU", test_nearlyRandom5); // 0.007s
         helper.testSort("Sort.QuickSort", "sort", test_nearlyRandom6); // 0.028s 改进后(随机基准) -> 0.004s
 //        helper.testSort(testList_nearly);  // 0.259s
+        helper.testSort("Sort.QuickSort3Ways", "sort", test_nearlyRandom7); // 0.01
+
 
     }
 }
