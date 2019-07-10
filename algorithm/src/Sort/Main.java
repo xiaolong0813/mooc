@@ -82,6 +82,23 @@ public class Main {
 //        helper.testSort(testList_nearly);  // 0.259s
         helper.testSort("Sort.QuickSort3Ways", "sort", test_nearlyRandom7); // 0.01
 
+        Integer[] maxn_random1 = helper.generateRandomArray(n, 0, n);
+        Integer[] maxn_random2 = maxn_random1.clone();
+
+        System.out.println();
+
+        double start1 = System.currentTimeMillis();
+        QuickSort.maxN(maxn_random1, n);
+        double end1 = System.currentTimeMillis();
+        System.out.println("max n of quick sort is " + (end1 - start1) / 1000); // 0.012s
+
+        double start2 = System.currentTimeMillis();
+        MaxN_QuickSort.maxN(maxn_random2, n);
+        double end2 = System.currentTimeMillis();
+        System.out.println("max n of maxN is " + (end2 - start2) / 1000);  // 0.004s
+
+
+
 
     }
 }

@@ -71,6 +71,13 @@ public class QuickSort {
         return j;
     }
 
+    public static Comparable maxN(Comparable[] arr, int n) {
+        if (n > arr.length || n < 1)
+            throw new  IllegalArgumentException("n exceed index limit");
+        QuickSort.sort(arr);
+        return arr[n - 1];
+    }
+
     public static void swap(Object[] arr, int i, int j) {
         Object temp = arr[j];
         arr[j] = arr[i];

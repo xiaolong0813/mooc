@@ -21,7 +21,8 @@ public class MaxN_QuickSort {
 
         n = n > arr.length ? arr.length : n;
         int j = __partition(arr, l, r);
-        // 如果此时正好是v所在位置，返回此值
+        // 如果此时正好是v所在位置，返回此值.如果在后面一段的时候n取值n-(j-l+1)，则此时的j为partition后
+        // 在后一段中的索引，应该等于之前的j加上当前的n（因为此时n取值n-(j-l+1)）
         if (j == n - 1) {
             return arr[j];
         }
@@ -44,17 +45,6 @@ public class MaxN_QuickSort {
                 j++;
             }
         }
-//        int i = l + 1, j = r;
-//        while (true) {
-//            while (i <= r && arr[i].compareTo(first) <= 0) i++;
-//            while (j >= l + 1 && arr[j].compareTo(first) >= 0) j--;
-//            // 如果中间有相同元素，有可能i>j
-//            if (i > j) break;
-//            SortTestHelper.swap(arr, i, j);
-//            i++;
-//            j--;
-//        }
-
         SortTestHelper.swap(arr, l, j);
         return j;
     }
