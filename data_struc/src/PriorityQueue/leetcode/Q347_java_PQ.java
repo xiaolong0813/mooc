@@ -85,6 +85,7 @@ public class Q347_java_PQ {
         PriorityQueue<Integer> queue = new PriorityQueue<>(
                 Comparator.comparing(map::get)
         );
+        // 只需要前k大的，仅保留k个即可
         for (int key : map.keySet()) {
             if (queue.size() == k) {
                 // Freq类不再需要，直接比较map中的value
@@ -116,7 +117,7 @@ public class Q347_java_PQ {
 
     public static void main(String[] args) {
 
-        Q347 q = new Q347();
+        Q347_java_PQ q = new Q347_java_PQ();
 
         List<Integer> list = q.topKFrequent(new int[]{1, 1, 1, 2, 2, 3},2);
 
