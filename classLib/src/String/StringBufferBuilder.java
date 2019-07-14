@@ -63,6 +63,8 @@ public class StringBufferBuilder {
 
         HashMap map1 = new HashMap();
 
+        Hashtable hashtable = new Hashtable();
+
 
 //        testStr();
     }
