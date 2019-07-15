@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!--    ioc 入门-->
+<!--    1. 配置文件无参构造创建-->
+<!--    id可以随便取名字，建议为类名小写。路径需要写对-->
+    <bean id="user" class="cn.itcast.ioc.User" scope="prototype"></bean>
+
+<!--    2. 使用静态工厂创建对象-->
+<!--    这里不用bean2的全路径，要引入工工厂的路径，因为对象在工厂创建，然后引入其中的调用方法-->
+<!--    <bean id="bean2" class="cn.itcast.bean.Bean2_StaticFactory" factory-method="getBean2"></bean>-->
+
+<!--    3. 实例工厂创建对象-->
+<!--    先创建工厂对象-->
+    <bean id="bean3Factory" class="cn.itcast.bean.Bean3_InstanceFactory"></bean>
+<!--    用属性导入工厂对象，和其中的方法-->
+    <bean id="bean3" factory-bean="bean3Factory" factory-method="getBean3"></bean>
+
+</beans>
