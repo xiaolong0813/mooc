@@ -13,10 +13,16 @@ public class User {
     // 但如果包含了下面的无参构造函数，就可以实例化了
     public User() {
     }
+    // 属性注入第一种方法，set函数
+    public void setUsername(String name) {
+        this.username = name;
+    }
 
     public void add() {
         System.out.println("add.....");
     }
+
+
 
     public static void main(String[] args) {
         // 原始方法

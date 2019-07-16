@@ -1,9 +1,14 @@
 package cn.itcast.ioc;
 
-import cn.itcast.bean.Bean2;
+import cn.itcast.property.Book_SetDI;
+import cn.itcast.property.Person_Pname;
+import cn.itcast.property.Person_complex;
+import cn.itcast.property.PropertyBean;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.awt.print.Book;
 
 public class testIOC {
 
@@ -17,12 +22,27 @@ public class testIOC {
         User user1 = (User) context.getBean("user");
         User user2 = (User) context.getBean("user");
         // 以下输出地址相同。单例对象
-        System.out.println(user1);
-        System.out.println(user2);
+//        System.out.println(user1);
+//        System.out.println(user2);
 //        user.add();
 
-//        Bean2 bean2 = (Bean2) context.getBean("bean2");
-//        bean2.add();
+        PropertyBean demo1 = (PropertyBean) context.getBean("demo1");
+        demo1.test1();
+
+        Book_SetDI book = (Book_SetDI) context.getBean("book");
+        book.demobook();
+
+        UserService service = (UserService) context.getBean("userService");
+        service.add();
+
+        Person_Pname person = (Person_Pname) context.getBean("person");
+        person.testPerson();
+
+        Person_complex personC = (Person_complex) context.getBean("personComplex");
+        personC.test();
+
+
+
     }
 
 

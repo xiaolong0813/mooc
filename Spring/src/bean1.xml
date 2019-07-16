@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="
        http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd">
@@ -19,5 +20,75 @@
     <bean id="bean3Factory" class="cn.itcast.bean.Bean3_InstanceFactory"></bean>
 <!--    用属性导入工厂对象，和其中的方法-->
     <bean id="bean3" factory-bean="bean3Factory" factory-method="getBean3"></bean>
+
+
+<!--    ****************属性注入****************-->
+<!--    1). 使用有参数的构造函数注入,这种方式用的不是最多-->
+    <bean id="demo1" class="cn.itcast.property.PropertyBean">
+<!--        name是方法需要输入的参数名，value是此参数的值-->
+        <constructor-arg name="name" value="小龙"/>
+    </bean>
+
+<!--    2) 使用set方法注入属性。这是主要方法-->
+    <bean id="book" class="cn.itcast.property.Book_SetDI">
+<!--        注入属性值,name的属性值，是类里面定义的名称，value是设置的具体值-->
+        <property name="bookname" value="傲慢与偏见"></property>
+    </bean>
+
+<!--    3) 注入对象类型属性-->
+<!--    1. 配置service和dao的对象-->
+    <bean id="userDao" class="cn.itcast.ioc.UserDao"></bean>
+
+    <bean id="userService" class="cn.itcast.ioc.UserService">
+<!--    2. 在service的bean注入dao对象 set方法。name是service类中的属性名，
+            之前字符串可以用value写入，这里是对象。需要ref引入。这里引入的是对
+            象标签的id值，也就是userDao-->
+        <property name="dao" ref="userDao"></property>
+    </bean>
+
+<!--    4) p名称空间注入,如果用set方法，需要加入property标签，这里不用-->
+    <bean id="person" class="cn.itcast.property.Person_Pname" p:name="霄龙P"></bean>
+
+<!--    5）注入复杂类型的属性（arr，list，map，properties）,也是用set方法-->
+<!--    同样先建立类的对象-->
+    <bean id="personComplex" class="cn.itcast.property.Person_complex">
+<!--        set方法注入各种类型，所以也是添加property标签-->
+<!--        a. 数组,因要注入多个值，不能直接写value，用list写入多个value-->
+        <property name="arr">
+            <list>
+                <value>谢霆锋</value>
+                <value>毕福剑</value>
+                <value>刘德华</value>
+            </list>
+        </property>
+<!--        b. list.同样用list和value写入-->
+        <property name="list">
+            <list>
+                <value>海贼王</value>
+                <value>火影</value>
+                <value>死神</value>
+            </list>
+        </property>
+<!--        c. map. 需要用map，以及entry写入key和value-->
+        <property name="map">
+            <map>
+                <entry key="a" value="🐶"/>
+                <entry key="b" value="🐱"/>
+                <entry key="c" value="🐇"/>
+            </map>
+        </property>
+<!--        d. properties.需要写在props里面，prop是各个属性，对映的值
+                写在标签里面-->
+        <property name="properties">
+            <props>
+                <prop key="driverclass">com.mysql.jdbc.Driver</prop>
+                <prop key="username">root</prop>
+            </props>
+        </property>
+
+
+    </bean>
+
+
 
 </beans>
