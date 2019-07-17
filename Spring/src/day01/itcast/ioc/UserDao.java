@@ -1,4 +1,4 @@
-package cn.itcast.ioc;
+package day01.itcast.ioc;
 
 public class UserDao {
 

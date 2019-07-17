@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+
+<!--    这里就不需要引入bean对象了-->
+<!--    只需要开启注解扫描-->
+<!--    base-package表示需要扫描的package。如果需要写很多，可以用，隔开，但是更推荐的是-->
+<!--    直接扫描最外层的大包-->
+<!--    过程：-->
+<!--    1）到包里面扫描类，方法，属性上面是否有注解-->
+    <context:component-scan base-package="day02"></context:component-scan>
+
+<!--    如果只有下面这种，只会扫描属性上面的注解，一般推荐上面-->
+<!--    <context:annotation-config></context:annotation-config>-->
+
+</beans>

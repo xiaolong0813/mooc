@@ -1,4 +1,4 @@
-package cn.itcast.property;
+package day01.itcast.property;
 
 public class Person_Pname {
 

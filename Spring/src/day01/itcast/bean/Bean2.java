@@ -1,4 +1,4 @@
-package cn.itcast.bean;
+package day01.itcast.bean;
 
 public class Bean2 {
 
