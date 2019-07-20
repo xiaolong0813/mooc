@@ -1,4 +1,4 @@
-package day01.itcast.property;
+package day01.property;
 
 import java.util.List;
 import java.util.Map;

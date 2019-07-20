@@ -1,4 +1,4 @@
-package day01.itcast.ioc;
+package day01.ioc;
 
 public class User {
 

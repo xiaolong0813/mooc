@@ -1,4 +1,4 @@
-package day01.itcast.bean;
+package day01.bean;
 
 public class Bean2_StaticFactory {
 

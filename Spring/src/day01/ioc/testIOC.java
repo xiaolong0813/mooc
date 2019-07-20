@@ -1,9 +1,9 @@
-package day01.itcast.ioc;
+package day01.ioc;
 
-import day01.itcast.property.Book_SetDI;
-import day01.itcast.property.Person_Pname;
-import day01.itcast.property.Person_complex;
-import day01.itcast.property.PropertyBean;
+import day01.property.Book_SetDI;
+import day01.property.Person_Pname;
+import day01.property.Person_complex;
+import day01.property.PropertyBean;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -12,7 +12,7 @@ public class testIOC {
 
     // 用静态代码块来创建配置文件读取对象
     public static ApplicationContext testStatic() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("day01/itcast/bean1.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("bean1.xml");
 
         return context;
     }
