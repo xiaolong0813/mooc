@@ -4,57 +4,91 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans.xsd
-	http://www.springframework.org/schema/context
-	http://www.springframework.org/schema/context/spring-context.xsd
-	http://www.springframework.org/schema/aop
-	http://www.springframework.org/schema/aop/spring-aop.xsd
-	http://www.springframework.org/schema/tx
-	http://www.springframework.org/schema/tx/spring-tx.xsd">
-<!--注意：-->
-<!--    1. 需要导入tx事务相关的约束，上面是比较全的约束，可以直接复制粘贴-->
-<!--    2. 除了这些约束，也要导入相应的jar包-->
-<!--    3. 要在服务启动时就加载下面的配置，需要在web.xml中导入监听器以及文件位置-->
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <!--    注意：-->
+    <!--    1. 需要导入tx事务相关的约束，上面是比较全的约束，可以直接复制粘贴-->
+    <!--    2. 除了这些约束，也要导入相应的jar包-->
+    <!--    3. 要在服务启动时就加载下面的配置，需要在web.xml中导入监听器以及文件位置-->
 
-
-<!--    0) 配置连接池和模板-->
-
-    <!--    创建jdbcTemplate对象，注入到dao中。dataSource属性要注入到里面(template里面由dataSource的set方法，可以查看-->
-    <bean id="template" class="org.springframework.jdbc.core.JdbcTemplate">
-        <property name="dataSource" ref="dataSource"></property>
-    </bean>
-
-    <!--    配置c3p0连接池 (类名可以查源码得到)-->
+<!--    一. 配置c3p0连接池 (类名可以查源码得到)-->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-        <property name="jdbcUrl" value="jdbc:mysql:///spring?useUnicode=true&amp;characterEncoding=utf8"></property>
+        <property name="jdbcUrl" value="jdbc:mysql:///spring?useUnicode=true&amp;useSSL=false&amp;allowPublicKeyRetrieval=true"></property>
         <property name="driverClass" value="com.mysql.jdbc.Driver"></property>
         <property name="user" value="root"></property>
         <property name="password" value="xuxiao@2198360"></property>
     </bean>
 
-    <!--    配置action对象.注意多实例-->
-    <bean id="userActionSpring" class="day04.sshdemo1.UserAction" scope="prototype"></bean>
-
-
-<!--    配置对象，在service里面注入dao对象，dao用连接池访问数据,dao中注入模板对象-->
-    <bean id="orderDao" class="day03.transactionAnno.OrderDao">
-        <property name="jdbcTemplate" ref="template"></property>
-    </bean>
-    <bean id="orderService" class="day03.transactionAnno.OrderService">
-        <property name="orderDao" ref="orderDao"></property>
-    </bean>
-
-<!--    注解方式实现事务管理-->
-<!--    1）配置事务管理器（直接双击shift搜索）-->
-    <!--    其中要配置数据源dataSource，也就是指定是对哪个数据库做的操作-->
-    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+<!--    二. sessionFactory的创建也交给spring管理（原来在hibernate的配置文件中）-->
+    <!--    即要完成下面代码的功能，直接创建Configuration对象再调用configure方法是无法完成的，可以直接调用封装好的类-->
+    <!--    cfg = new Configuration().configure();-->
+    <!--    sessionFactory = cfg.buildSessionFactory();-->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <!--        由于hibernate核心文件中没有数据库配置，需要再spring进行配置，注入dataSource-->
         <property name="dataSource" ref="dataSource"></property>
+        <!--        指定使用的hibernate核心配置文件.location属性可以在类中查到。-->
+        <!--        注意，单独用hibernate配置文件时，需要放在固定位置，即src下，但整合了就可以在下面指定路径了-->
+<!--        <property name="configLocations" value="classpath:hibernate.cfg.xml"></property>-->
+<!--        ***如果不用hibernate的配置文件，可以用下面属性hibernateProperties进行配置。上面一行可以去掉，hibernate文件可以删掉***-->
+<!--        用键值对property的形式-->
+<!--        （1）配置hibernate基本信息-->
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="dialect">org.hibernate.dialect.MySQLDialect</prop>
+            </props>
+        </property>
+<!--        （2）配置映射文件引入-->
+<!--        可以看到LocalSessionFactoryBean类中private String[] mappingResources是个数组，所以需要list导入-->
+        <property name="mappingResources">
+            <list>
+<!--                这里可以引入多个value，即映射文件-->
+                <value>day04/sshdemo1/entity/user.hbm.xml</value>
+            </list>
+        </property>
     </bean>
 
-<!--    2) 开始事务注解，其中要指定事务管理器的名称-->
+<!--    三，配置事务管理器以及事务增强(标注)-->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <!--        注入dataSource。指定对哪个进行增强，可以直接注入，也可以注入sessionFactory(包含数据源)-->
+        <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    <!--    开始事务注解(注解加在service上，也可以在dao上，一般建议在service)-->
     <tx:annotation-driven transaction-manager="transactionManager"></tx:annotation-driven>
 
-<!--    3）在要使用事务的方法所在类上面添加注解.搜索到类上的注解@Transactional后，会对类中所有方法增强-->
+<!--    四. 关于User的相关配置，在User.xml中配置，并在此引入-->
+    <import resource="classpath:user.xml"></import>
+
+<!--&lt;!&ndash;    第二 配置action对象.注意多实例&ndash;&gt;-->
+<!--&lt;!&ndash;    action中注入service以调用&ndash;&gt;-->
+<!--    <bean id="userActionSpring" class="day04.sshdemo1.action.UserAction" scope="prototype">-->
+<!--        <property name="service" ref="userService"></property>-->
+<!--    </bean>-->
+
+<!--&lt;!&ndash;    第三，创建dao对象，注意创建的是此接口的实现类对象，需要将hibernateTemplate注入其中&ndash;&gt;-->
+<!--&lt;!&ndash;    创建hibernateTemplate对象，其中需要sessionFactory对象&ndash;&gt;-->
+<!--    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">-->
+<!--        <property name="sessionFactory" ref="sessionFactory"></property>-->
+<!--    </bean>-->
+<!--    <bean id="userDaoImpl" class="day04.sshdemo1.dao.UserDaoImpl">-->
+<!--        <property name="template" ref="hibernateTemplate"></property>-->
+<!--    </bean>-->
+
+<!--&lt;!&ndash;    第四，创建service对象,在其中注入daoImpl对象&ndash;&gt;-->
+<!--    <bean id="userService" class="day04.sshdemo1.service.UserService">-->
+<!--        <property name="dao" ref="userDaoImpl"></property>-->
+<!--    </bean>-->
+
+
+
 
 </beans>

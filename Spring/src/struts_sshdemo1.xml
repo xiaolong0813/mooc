@@ -8,7 +8,7 @@
 <struts>
     <!--访问action的时候对象会创建-->
         <package name="sshdemo" extends="struts-default" namespace="/">
-<!--            <action name="userAction" class="day04.sshdemo1.UserAction"></action>-->
+<!--            <action name="userAction" class="day04.sshdemo1.action.UserAction"></action>-->
 <!--            class属性就不写action全路径，如果写了，action对象会创建两次，就写spring配置action的bean的id值即可
                 但要注意需要引入jar包-->
 <!--            操作过程：-->
