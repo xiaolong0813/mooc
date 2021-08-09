@@ -103,6 +103,7 @@ public class BST<E extends Comparable<E>> {
         // 这里用递归实现，使用考虑node为根的二分树中插入E
             add_complex(root, e);
         }
+    }
 
 
         // 非递归实现 （待验证）
@@ -125,7 +126,7 @@ public class BST<E extends Comparable<E>> {
 //            }
 //        }
 
-    }
+
 
     // 向以node为根的二分搜索树中插入元素E，递归。
     // 这个方法只在内部用，为私有
