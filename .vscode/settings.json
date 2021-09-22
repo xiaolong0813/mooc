@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "cassert": "cpp",
-        "string": "cpp",
-        "iosfwd": "cpp"
-    }
-}
