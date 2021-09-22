@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Physics</title>
+</head>
+<body>
+<!--    通常调用width和hieght定义大小-->
+<!--    不建议css的方式。因为同时定义了分辨率大小-->
+<canvas id="canvas"
+        style="
+        border: 1px solid #aaa;
+        display: block;
+        margin: 50px auto"
+>
+    <!--        以下在支持canvas的浏览器中被忽略-->
+    当前浏览器不支持canvas，请更换浏览器再试
+</canvas>
+
+<script>
+    var ball = {x: 512, y: 100, r: 20, g: 1, vx: -4, vy: 0, color: "#005588"}
+
+    window.onload = function () {
+        var canvas = document.getElementById('canvas')
+        canvas.width = 1024
+        canvas.height = 768
+
+        var context = canvas.getContext('2d')
+
+        var startTime = new Date().getTime()
+        setInterval(() => {
+
+            render(context)
+            update(context)
+
+        }, 50)
+
+    }
+
+    // 图像数据的更新放在这里
+    function update(ctx) {
+        // var time = (new Date().getTime() - startTime) / 1000
+        ball.x += ball.vx
+        ball.y += ball.vy
+        ball.vy += ball.g
+
+        if (ball.y >= ctx.canvas.height - ball.r) {
+            ball.y = ctx.canvas.height - ball.r
+            ball.vy = ball.vy * 0.5 < 0.1 ? 0 : -ball.vy * 0.5
+        }
+    }
+
+    // render 只用来渲染新的图像。图像数据的更新放在外面
+    function render(ctx, time) {
+        // 通过ctx.canvas获取画布
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+
+        ctx.fillStyle = ball.color
+
+        ctx.beginPath()
+        ctx.arc(
+            // ball.x + ball.vx * time,
+            // ball.y + ball.vy * time + ball.g * time ** 2 / 2,
+            ball.x,
+            ball.y,
+            ball.r,
+            0,
+            Math.PI * 2)
+        ctx.closePath()
+        ctx.fill()
+    }
+
+</script>
+
+</body>
+</html>
