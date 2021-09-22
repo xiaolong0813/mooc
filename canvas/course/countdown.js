@@ -80,12 +80,18 @@ function update() {
         if (Math.floor(nextSeconds / 10) != Math.floor(curSeconds / 10)) {
             addBalls(MARGIN_LEFT + (RADIUS + 1) * 78, MARGIN_TOP, Math.floor(nextSeconds / 10))
         }
+
         if (nextSeconds % 10 != curSeconds % 10) {
             addBalls(MARGIN_LEFT + (RADIUS + 1) * 93, MARGIN_TOP, nextSeconds % 10)
         }
 
         curShowTimeSeconds = nextShowTimeSeconds
     }
+
+    // 每次刷新都需要更新位置使其移动
+    ballsMove()
+    console.log(balls.length)
+
 }
 
 function addBalls(x_start, y_start, num) {
@@ -112,15 +118,25 @@ function addBalls(x_start, y_start, num) {
 }
 
 // 小球掉落
-function move(ball, ctx) {
+function ballsMove() {
     // var time = (new Date().getTime() - startTime) / 1000
-    ball.x += ball.vx
-    ball.y += ball.vy
-    ball.vy += ball.g
+    for (let i = 0; i < balls.length; i++) {
+        ball = balls[i]
+        ball.x += ball.vx
+        ball.y += ball.vy
+        ball.vy += ball.g
 
-    if (ball.y >= ctx.canvas.height - ball.r) {
-        ball.y = ctx.canvas.height - ball.r
-        ball.vy = ball.vy * 0.5 < 0.1 ? 0 : -ball.vy * 0.5
+        // x 方向判断碰撞。走出画面后删去该球
+        if (ball.x >= WINDOW_WIDTH + ball.r || ball.x <= -ball.r) {
+            // ball.vx = -ball.vx
+            balls.splice(i--, 1)
+
+        }
+        // y 方向判断碰撞
+        if (ball.y >= WINDOW_HEIGHT - ball.r) {
+            ball.y = WINDOW_HEIGHT - ball.r
+            ball.vy = ball.vy * 0.5 < 0.1 ? 0 : -ball.vy * 0.5
+        }
     }
 }
 
@@ -140,7 +156,9 @@ function render(ctx) {
         ctx.closePath()
         ctx.fill()
 
-        move(ball, ctx)
+        // 这里可以直接更新各个小球位置，但是一般render只渲染。不更新数据
+        // 所以还是放在update中，再循环更新一次位置
+        // ballsMove(ball, ctx)
     })
 
 
