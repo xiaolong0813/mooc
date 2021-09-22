@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--    通常调用width和hieght定义大小-->
+<!--    不建议css的方式。因为同时定义了分辨率大小-->
+    <canvas id="canvas"
+            width="1024"
+            height="768"
+            style="
+            border: 1px solid #aaa;
+            display: block;
+            margin: 50px auto"
+    >
+<!--        以下在支持canvas的浏览器中被忽略-->
+        当前浏览器不支持canvas，请更换浏览器再试
+    </canvas>
+
+    <script>
+        window.onload = function () {
+            var canvas =  document.getElementById('canvas')
+
+            // js 确定画布大小
+            canvas.width = 1024
+            canvas.height = 768
+
+            if (canvas.getContext('2d')) {
+                var context = canvas.getContext('2d')
+                // 使用context绘制。基本都是基于context上下文环境进行的
+                // canvas 是基于状态额绘图，即先设置绘图状态，再调用函数绘制
+                // 左上角为原点，向右为x正向，向下为y正向
+                context.beginPath()  // 开启新的图形
+                context.moveTo(100, 100)
+                context.lineTo(700, 700)
+                context.lineTo(100, 700)
+                context.lineTo(100, 100)
+                context.closePath()
+                // 设置边框，并用函数绘制
+                context.lineWidth = 5
+                context.strokeStyle = "red"
+                context.stroke()
+                // 填充
+                context.fillStyle = "rgb(2, 100, 30)"
+                context.fill()
+
+                // 另一个
+                context.beginPath()
+                context.moveTo(200, 100)
+                context.lineTo(700, 600)
+                context.closePath()
+
+                context.strokeStyle = "black"
+                context.stroke()
+
+            }
+            else {
+                alert("当前浏览器不支持canvas，请更换浏览器再试")
+            }
+
+
+
+        }
+    </script>
+</body>
+</html>

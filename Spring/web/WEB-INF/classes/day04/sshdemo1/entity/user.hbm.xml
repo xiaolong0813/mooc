@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<!--hibernate 的映射对应配置文件-->
+
+<hibernate-mapping>
+<!--  1.配置类和表对应-->
+<!--    class标签：name：实体类全路径，table：对应数据库表名称-->
+<!--  2. 属性和列对应-->
+<!--    id：name为属性名称，column为对应列名，generator为生成策略-->
+  <class name="day04.sshdemo1.entity.User" table="t_user">
+    <id name="uid" column="uid">
+      <generator class="native"></generator>
+    </id>
+    <property name="username" column="username"></property>
+<!--    column可以省略，与name相同-->
+    <property name="address"></property>
+  </class>
+
+</hibernate-mapping>

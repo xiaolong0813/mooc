@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<!--把下面交给spring进行管理。如果这里和spring都创建，就会创建两次实例-->
+<struts>
+    <!--访问action的时候对象会创建-->
+        <package name="sshdemo" extends="struts-default" namespace="/">
+<!--            <action name="userAction" class="day04.sshdemo1.action.UserAction"></action>-->
+<!--            class属性就不写action全路径，如果写了，action对象会创建两次，就写spring配置action的bean的id值即可
+                但要注意需要引入jar包-->
+<!--            操作过程：-->
+<!--            1. 服务启动时，会根据spring配置文件创建action的bean对象，-->
+<!--            2. 访问action时，根据访问路径，如http://localhost:8080/SpringWebDemo/userAction.action，找到这里配置的-->
+<!--            name，然后根据反射创建class指明的对象-->
+<!--            3. 这里的class就是spring里面相应bean的id，根据这个id创建此bean对象-->
+            <action name="userActionSSH" class="userActionSpring"></action>
+        </package>
+</struts>
+
+<!--还需要在web.xml中引入过滤器-->

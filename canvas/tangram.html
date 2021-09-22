@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tangram</title>
+</head>
+<body>
+<!--    通常调用width和hieght定义大小-->
+<!--    不建议css的方式。因为同时定义了分辨率大小-->
+<canvas id="canvas"
+        width="1024"
+        height="768"
+        style="
+            border: 1px solid #aaa;
+            display: block;
+            margin: 50px auto"
+>
+    <!--        以下在支持canvas的浏览器中被忽略-->
+    当前浏览器不支持canvas，请更换浏览器再试
+</canvas>
+
+<script>
+    var tangram = [
+        {p: [{x: 0, y: 0}, {x: 800, y: 0}, {x: 400, y: 400}], color: "#caff67"},
+        {p: [{x: 0, y: 0}, {x: 400, y: 400}, {x: 0, y: 800}], color: "#67becf"},
+        {p: [{x: 800, y: 0}, {x: 800, y: 400}, {x: 600, y: 600}, {x: 600, y: 200}], color: "#ef3d61"},
+        {p: [{x: 600, y: 200}, {x: 600, y: 600}, {x: 400, y: 400}], color: "#f9f51a"},
+        {p: [{x: 400, y: 400}, {x: 600, y: 600}, {x: 400, y: 800}, {x: 200, y: 600}], color: "#a594c0"},
+        {p: [{x: 200, y: 600}, {x: 400, y: 800}, {x: 0, y: 800}], color: "#fa8ecc"},
+        {p: [{x: 800, y: 400}, {x: 800, y: 800}, {x: 400, y: 800}], color: "#f6ca29"},
+    ]
+
+    window.onload = function () {
+        var canvas =  document.getElementById('canvas')
+        canvas.width = 800
+        canvas.height = 800
+
+        var context = canvas.getContext('2d')
+        for(var i = 0; i < tangram.length; i++) {
+            draw(tangram[i], context)
+        }
+    }
+
+    function draw(piece, ctx) {
+        ctx.beginPath()
+        ctx.moveTo(piece.p[0].x, piece.p[0].y)
+        for (let i = 1; i < piece.p.length; i++) {
+            ctx.lineTo(piece.p[i].x, piece.p[i].y)
+        }
+        ctx.closePath()
+        // 填充
+        ctx.fillStyle = piece.color
+        ctx.fill()
+        // 边框
+        ctx.strokeStyle = "black"
+        ctx.lineWidth = 3
+        ctx.stroke()
+    }
+
+    // 可以做小游戏，鼠标移动每块。用碰撞检测的技术可以实现
+</script>
+</body>
+</html>

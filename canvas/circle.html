@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Circle</title>
+</head>
+<body>
+    <!--    通常调用width和hieght定义大小-->
+    <!--    不建议css的方式。因为同时定义了分辨率大小-->
+    <canvas id="canvas"
+            width="1024"
+            height="768"
+            style="
+                border: 1px solid #aaa;
+                display: block;
+                margin: 50px auto"
+    >
+        <!--        以下在支持canvas的浏览器中被忽略-->
+        当前浏览器不支持canvas，请更换浏览器再试
+    </canvas>
+
+    <script>
+
+        window.onload = function () {
+            var canvas =  document.getElementById('canvas')
+            var context = canvas.getContext('2d')
+
+            context.lineWidth = 5
+            context.strokeStyle = "#005588"
+            // 状态
+            // context.arc(300, 300, 200, 0, 1.5 * Math.PI, true)
+
+            for (let i = 0; i < 10; i++) {
+                context.beginPath()
+                context.arc(50+ 100 * i, 60, 40, 0, 2 * Math.PI *(i + 1) / 10)
+                // closePath 会自动封闭路径
+                context.closePath()
+
+                context.stroke()
+            }
+
+            for (let i = 0; i < 10; i++) {
+                context.beginPath()
+                context.arc(50+ 100 * i, 180, 40, 0, 2 * Math.PI *(i + 1) / 10)
+                // 没有closePath 就不会自动封闭
+                // context.closePath()
+                context.stroke()
+            }
+
+            for (let i = 0; i < 10; i++) {
+                context.beginPath()
+                context.arc(50+ 100 * i, 300, 40, 0, 2 * Math.PI *(i + 1) / 10, true)
+                context.closePath()
+                context.stroke()
+            }
+
+            for (let i = 0; i < 10; i++) {
+                context.beginPath()
+                context.arc(50+ 100 * i, 420, 40, 0, 2 * Math.PI *(i + 1) / 10, true)
+                // context.closePath()
+                context.stroke()
+            }
+
+            context.fillStyle = "#005588"
+            for (let i = 0; i < 10; i++) {
+                context.beginPath()
+                context.arc(50+ 100 * i, 540, 40, 0, 2 * Math.PI *(i + 1) / 10, true)
+                context.closePath()
+                // context.stroke()
+                context.fill()
+            }
+
+            for (let i = 0; i < 10; i++) {
+                context.beginPath()
+                context.arc(50+ 100 * i, 660, 40, 0, 2 * Math.PI *(i + 1) / 10, true)
+                // context.closePath()
+                // context.stroke()
+                context.fill()
+            }
+
+        }
+
+    </script>
+
+</body>
+</html>

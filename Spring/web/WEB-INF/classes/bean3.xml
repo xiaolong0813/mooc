@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop" xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"> <!-- bean definitions here -->
+
+<!--    1. aop-配置文件方法-->
+<!--    1）. 配置两个类的对象（被增强类+增强类）-->
+    <bean id="book" class="day02.aop.Book"></bean>
+    <bean id="bookaop" class="day02.aop.BookAOP"></bean>
+
+<!--    2）. 配置aop操作-->
+    <aop:config>
+<!--        a. 配置切入点（表达式指定增强对象）-->
+        <aop:pointcut expression="execution(* day02.aop.Book.*(..))" id="cut1"></aop:pointcut>
+<!--        b. 配置切面.把增强用到方法，指定增强类bookaop，以及增强类型before等-->
+        <aop:aspect ref="bookaop">
+<!--            method-使用哪个方法作为前置增强，以及切入点cut1-->
+            <aop:before method="before1" pointcut-ref="cut1"></aop:before>
+            <aop:after method="after1" pointcut-ref="cut1"></aop:after>
+            <aop:around method="around1" pointcut-ref="cut1"></aop:around>
+        </aop:aspect>
+    </aop:config>
+
+<!--    2. aop-注解的方式-->
+<!--    1) 创建对象-->
+    <bean id="book1" class="day03.aopAnno.Book"></bean>
+    <bean id="bookaop1" class="day03.aopAnno.BookAOPAnno"></bean>
+<!--    2）开启aop操作-->
+    <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+
+</beans>

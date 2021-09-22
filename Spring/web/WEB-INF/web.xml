@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+<!--    注意，在将新的jar包导入项目中时。不能只拷贝到WEB-INF\lib中。注意需要右键点击save as libary-->
+<!--    以及在project structure中，选中Artifacts，选择war exploded，在Available Elements中将-->
+<!--    刚刚添加的jar包put into /WEB-INF/lib-->
+
+<!--    struts2过滤器-->
+    <filter>
+        <filter-name>struts2</filter-name>
+        <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+        <!--    指定struts2配置文件位置-->
+        <init-param>
+            <param-name>config</param-name>
+            <param-value>
+                struts-default.xml,
+                struts-plugin.xml,
+                struts_sshdemo1.xml
+            </param-value>
+        </init-param>
+    </filter>
+
+
+    <filter-mapping>
+        <filter-name>struts2</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+<!--    配置上下文监听器-->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <!--    指定spring配置文件位置(全局上下文)，是通过监听器加载-->
+    <!--    param-name可以在父类contextLoader中找到-->
+    <!--    classpath类路径，即class文件的所在处，可以自己设定。这里是在web/WEB-INF/classes.其中的文件和src下的文件对应-->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:bean8_sshdemo1.xml</param-value>
+    </context-param>
+
+
+    <listener>
+        <listener-class>servlet.testListener</listener-class>
+    </listener>
+</web-app>

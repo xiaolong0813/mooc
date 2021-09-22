@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+<!--    第二 配置action对象.注意多实例-->
+<!--    action中注入service以调用-->
+    <bean id="userActionSpring" class="day04.sshdemo1.action.UserAction" scope="prototype">
+        <property name="service" ref="userService"></property>
+    </bean>
+
+<!--    第三，创建dao对象，注意创建的是此接口的实现类对象，需要将hibernateTemplate注入其中-->
+<!--    创建hibernateTemplate对象，其中需要sessionFactory对象-->
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
+        <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    <bean id="userDaoImpl" class="day04.sshdemo1.dao.UserDaoImpl">
+        <property name="template" ref="hibernateTemplate"></property>
+    </bean>
+
+<!--    第四，创建service对象,在其中注入daoImpl对象-->
+    <bean id="userService" class="day04.sshdemo1.service.UserService">
+        <property name="dao" ref="userDaoImpl"></property>
+    </bean>
+
+</beans>

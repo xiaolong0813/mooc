@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<!--hibernate核心配置文件.要放在src下-->
+
+<hibernate-configuration>
+  <session-factory>
+
+<!--第一部分：配置数据库信息，必须的-->
+    <!--之前数据库配置信息是在这里写入的，现在转到spring里面用c2p0连接池配置-->
+<!--    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>-->
+<!--    <property name="hibernate.connection.url">jdbc:mysql:///spring?useUnicode=true&amp;useSSL=false&amp;allowPublicKeyRetrieval=true</property>-->
+<!--    <property name="connection.username">root</property>-->
+<!--    <property name="connection.password">xuxiao@2198360</property>-->
+
+<!--第二部分：配置hibernate信息。可选的-->
+<!--    输出底层sql语句-->
+    <property name="hibernate.show_sql">true</property>
+<!--    输出底层sql语句格式-->
+    <property name="hibernate.format_sql">true</property>
+<!--    hibernate帮创建表，需要配置之后 update：如果已有表，更新，如果没有，创建-->
+    <property name="hibernate.hbm2ddl.auto">update</property>
+<!--    配置数据库方言-->
+<!--    在mysql里面实现分页，关键字limit，只能在mysql内使用-->
+<!--    在Oracle数据库，实现分页 rownum-->
+<!--    让hibernate识别不同数据库的特有语句-->
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+
+<!--第三部分：把映射配置文件放到核心配置中，必须的-->
+    <mapping resource="day04/sshdemo1/entity/user.hbm.xml"></mapping>
+
+    <!-- DB schema will be updated if needed -->
+    <!-- <property name="hibernate.hbm2ddl.auto">update</property> -->
+  </session-factory>
+</hibernate-configuration>
