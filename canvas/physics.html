@@ -18,12 +18,23 @@
 </canvas>
 
 <script>
-    var ball = {x: 512, y: 100, r: 20, g: 1, vx: -4, vy: 0, color: "#005588"}
+    var balls = [
+        {x: 512, y: 100, r: 20, g: 1, vx: -4, vy: 0, color: "#005588"},
+        {x: 412, y: 100, r: 20, g: 1, vx: 8, vy: 0, color: "#005588"},
+        {x: 312, y: 70, r: 20, g: 1, vx: -3, vy: 3, color: "#005588"},
+        {x: 212, y: 90, r: 20, g: 1, vx: -6, vy: 0, color: "#005588"},
+        {x: 602, y: 110, r: 20, g: 1, vx: 7, vy: 8, color: "#005588"},
+        // {x: 500, y: 50, r: 20, g: 1, vx: 10, vy: 0, color: "#005588"},
+        // {x: 42, y: 90, r: 20, g: 1, vx: 1, vy: -8, color: "#005588"},
+        // {x: 333, y: 77, r: 20, g: 1, vx: -10, vy: 0, color: "#005588"}
+    ]
+    // var ball1 = {x: 512, y: 100, r: 20, g: 1, vx: -4, vy: 0, color: "#005588"}
+    // var ball2 = {x: 512, y: 100, r: 20, g: 1, vx: -4, vy: 0, color: "#005588"}
 
     window.onload = function () {
         var canvas = document.getElementById('canvas')
-        canvas.width = 1024
-        canvas.height = 768
+        canvas.width = 800
+        canvas.height = 500
 
         var context = canvas.getContext('2d')
 
@@ -40,14 +51,46 @@
     // 图像数据的更新放在这里
     function update(ctx) {
         // var time = (new Date().getTime() - startTime) / 1000
-        ball.x += ball.vx
-        ball.y += ball.vy
-        ball.vy += ball.g
+        var scale = 0.5
+        for (let i = 0; i < balls.length; i++) {
+            var ball = balls[i]
+            ball.x += ball.vx
+            // console.log(ball.y, ball.vy)
+            // console.log(ball.vy)
+            if (((ball.y === ctx.canvas.height - ball.r) && Math.abs(ball.vy) < 1.75)) {
+                ball.vy = 0
+            } else {
+                ball.y += ball.vy
+                ball.vy += ball.g
+            }
 
-        if (ball.y >= ctx.canvas.height - ball.r) {
-            ball.y = ctx.canvas.height - ball.r
-            ball.vy = ball.vy * 0.5 < 0.1 ? 0 : -ball.vy * 0.5
+
+            if (ball.x >= ctx.canvas.width - ball.r || ball.x <= ball.r) {
+                ball.vx = -ball.vx
+            }
+
+            // console.log(ball.y, ball.vy)
+            if (ball.y >= ctx.canvas.height - ball.r) {
+                ball.y = ctx.canvas.height - ball.r
+                // ball.vy = Math.abs(ball.vy * scale) < 0.5 ? 0 : -ball.vy * scale
+                ball.vy = -ball.vy * scale
+            }
+
+
+            for (let j = 0; j < balls.length - 1; j++) {
+                if (j === i)
+                    continue
+                var anotherBall = balls[j]
+                var deltaX = Math.abs(ball.x - anotherBall.x)
+                var deltaY = Math.abs(ball.y - anotherBall.y)
+                if (deltaX ** 2 + deltaY ** 2 <= (ball.r + anotherBall.r) ** 2) {
+                    [ball.vx ,anotherBall.vx] = [anotherBall.vx, ball.vx]
+                    // [ball.vy ,anotherBall.vy] = [anotherBall.vy, ball.vy]
+                }
+            }
         }
+
+        // console.log(balls[0].y, balls[0].vy)
     }
 
     // render 只用来渲染新的图像。图像数据的更新放在外面
@@ -55,19 +98,21 @@
         // 通过ctx.canvas获取画布
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
 
-        ctx.fillStyle = ball.color
+        balls.forEach(ball => {
+            ctx.fillStyle = ball.color
+            ctx.beginPath()
+            ctx.arc(
+                // ball.x + ball.vx * time,
+                // ball.y + ball.vy * time + ball.g * time ** 2 / 2,
+                ball.x,
+                ball.y,
+                ball.r,
+                0,
+                Math.PI * 2)
+            ctx.closePath()
+            ctx.fill()
+        })
 
-        ctx.beginPath()
-        ctx.arc(
-            // ball.x + ball.vx * time,
-            // ball.y + ball.vy * time + ball.g * time ** 2 / 2,
-            ball.x,
-            ball.y,
-            ball.r,
-            0,
-            Math.PI * 2)
-        ctx.closePath()
-        ctx.fill()
     }
 
 </script>

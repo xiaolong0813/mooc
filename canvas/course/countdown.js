@@ -14,6 +14,12 @@ const colors = ["#33B5E5","#0099CC","#AA66CC","#9933CC","#99CC00","#669900","#FF
 
 window.onload = function () {
 
+    WINDOW_WIDTH = document.body.clientWidth
+    WINDOW_HEIGHT = document.body.clientHeight
+    RADIUS = Math.round(WINDOW_WIDTH * 4 / 5 / 108) - 1
+    MARGIN_TOP = Math.round(WINDOW_HEIGHT / 5)
+    MARGIN_LEFT = Math.round(WINDOW_WIDTH / 10)
+
     var canvas = document.getElementById('canvas')
     canvas.width = WINDOW_WIDTH
     canvas.height = WINDOW_HEIGHT
@@ -120,23 +126,43 @@ function addBalls(x_start, y_start, num) {
 // 小球掉落
 function ballsMove() {
     // var time = (new Date().getTime() - startTime) / 1000
+    var scale = 0.5
     for (let i = 0; i < balls.length; i++) {
         ball = balls[i]
         ball.x += ball.vx
-        ball.y += ball.vy
-        ball.vy += ball.g
 
-        // x 方向判断碰撞。走出画面后删去该球
+        if (!((ball.y === WINDOW_HEIGHT - ball.r) && ball.vy === 0)) {
+            ball.y += ball.vy
+            ball.vy += ball.g
+        }
+        // ball.y += ball.vy
+        // ball.vy += ball.g
+
+        // x 方向判断碰撞。走出画面后删去该球。结束该循环
         if (ball.x >= WINDOW_WIDTH + ball.r || ball.x <= -ball.r) {
             // ball.vx = -ball.vx
             balls.splice(i--, 1)
-
+            continue
         }
         // y 方向判断碰撞
         if (ball.y >= WINDOW_HEIGHT - ball.r) {
             ball.y = WINDOW_HEIGHT - ball.r
-            ball.vy = ball.vy * 0.5 < 0.1 ? 0 : -ball.vy * 0.5
+            // ball.vy = ball.vy * 0.5 < 0.1 ? 0 : -ball.vy * 0.5
+            ball.vy = Math.abs(ball.vy * scale) < 2 ? 0 : -ball.vy * scale
         }
+
+        // // 小球相互碰撞
+        // for (let j = 0; j < balls.length - 1; j++) {
+        //     if (j === i)
+        //         continue
+        //     var anotherBall = balls[j]
+        //     var deltaX = Math.abs(ball.x - anotherBall.x)
+        //     var deltaY = Math.abs(ball.y - anotherBall.y)
+        //     if (deltaX ** 2 + deltaY ** 2 <= (ball.r + anotherBall.r) ** 2) {
+        //         [ball.vx ,anotherBall.vx] = [anotherBall.vx, ball.vx]
+        //         // [ball.vy ,anotherBall.vy] = [anotherBall.vy, ball.vy]
+        //     }
+        // }
     }
 }
 

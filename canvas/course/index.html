@@ -1,18 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height: 100%">
 <head>
     <meta charset="UTF-8">
     <title></title>
 </head>
-<body>
+<body style="min-height: 100%">
     <!--    通常调用width和hieght定义大小-->
     <!--    不建议css的方式。因为同时定义了分辨率大小-->
-    <canvas id="canvas"
-            style="
-                    border: 1px solid #aaa;
-                    display: block;
-                    margin: 50px auto"
-    >
+<!--    自适应屏幕，全屏幕100%-->
+    <canvas id="canvas" style="height: 100%">
+<!--            style="-->
+<!--                    border: 1px solid #aaa;-->
+<!--                    display: block;-->
+<!--                    margin: 50px auto"-->
+<!--    >-->
         <!--        以下在支持canvas的浏览器中被忽略-->
         当前浏览器不支持canvas，请更换浏览器再试
     </canvas>
