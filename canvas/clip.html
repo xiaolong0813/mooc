@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Clip</title>
+</head>
+<body>
+
+<canvas id="canvas"
+        style="
+            border: 1px solid #aaa;
+            display: block;
+            margin: 50px auto"
+>
+    当前浏览器不支持canvas，请更换浏览器再试
+</canvas>
+
+<script>
+    let light = {x: 400, y: 400, radius: 150, vx: Math.random() * 5 + 10, vy: Math.random() * 5 + 10}
+    let rot = 0
+    let inc = 5
+    window.onload = function () {
+        var canvas = document.getElementById('canvas')
+        canvas.width = 800
+        canvas.height = 800
+        var ctx = canvas.getContext('2d')
+
+        setInterval(() => {
+            render(ctx)
+            update(canvas.width, canvas.height)
+        }, 40)
+    }
+
+    function render(ctx) {
+        let canvas = ctx.canvas
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+        ctx.save()
+
+        // 绘制背景
+        ctx.beginPath()
+        ctx.fillStyle = "black"
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+        // 定义剪辑区域
+        ctx.beginPath()
+        // 圆形
+        // ctx.arc(light.x, light.y, light.radius, 0, Math.PI * 2)
+        // 星星
+        star(ctx, light.x, light.y, light.radius, rot)
+        ctx.fillStyle = "#fff"
+        ctx.fill()
+        ctx.clip()
+
+        // 绘制剪辑区域内文字
+        ctx.font = "bold 150px Arial"
+        ctx.textAlign = "center"
+        ctx.textBaseline = "middle"
+        ctx.fillStyle = "#058"
+        ctx.fillText("CANVAS", canvas.width / 2, canvas.height / 4)
+        ctx.fillText("CANVAS", canvas.width / 2, canvas.height / 2)
+        ctx.fillText("CANVAS", canvas.width / 2, canvas.height / 4 * 3)
+
+        ctx.restore()
+    }
+
+    function star(ctx, x, y, R, rot) {
+        // 用save + restore保证图形变换对外部无影响
+        ctx.save()
+
+        // 基于状态，先做图形的变换，再绘制
+        ctx.translate(x, y)
+        ctx.rotate(rot / 180 * Math.PI)
+        ctx.scale(R, R)
+
+        // 上面三句可以用下面代替
+        // ctx.transform(R, 0, 0, R, x, y)
+        // 基础绘制
+        starPath(ctx)
+
+        ctx.fillStyle = '#fb3'
+        ctx.fill()
+        ctx.restore()
+    }
+
+    function starPath(ctx) {
+        // ctx.moveTo(x, y - R)
+        ctx.beginPath()
+
+        for (let i = 0; i < 5; i++) {
+            let inAngle = (54 - 72 * i) * Math.PI / 180
+            let outAngle = (18 - 72 * i) * Math.PI / 180
+
+            ctx.lineTo(Math.cos(inAngle) * 0.5, -Math.sin(inAngle) * 0.5)
+            ctx.lineTo(Math.cos(outAngle), -Math.sin(outAngle))
+        }
+        ctx.closePath()
+    }
+
+    function update(width, height) {
+        rot += 2
+
+        light.x = light.x + light.vx
+        light.y = light.y + light.vy
+
+        if (light.radius >= 300 || light.radius <= 100)
+            inc = -inc
+
+        light.radius = light.radius + inc
+
+        // console.log(light.radius)
+
+        if (light.x >= width || light.x <= 0)
+            light.vx = -light.vx
+
+        if (light.y >= height || light.y <= 0)
+            light.vy = -light.vy
+
+    }
+
+</script>
+
+</body>
+</html>

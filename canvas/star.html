@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Star</title>
+</head>
+<body>
+
+<canvas id="canvas"
+        style="
+            border: 1px solid #aaa;
+            display: block;
+            margin: 50px auto"
+>
+    当前浏览器不支持canvas，请更换浏览器再试
+</canvas>
+
+<script>
+
+    window.onload = function () {
+        var canvas = document.getElementById('canvas')
+        canvas.width = 600
+        canvas.height = 600
+        var ctx = canvas.getContext('2d')
+
+        // ctx.lineWidth = 5
+        // ctx.strokeStyle = 'red'
+
+        ctx.fillStyle = "black"
+        // 直接绘制填充矩形 = （ctx.rect + ctx.fill)
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+        ctx.lineJoin = "miter"
+        ctx.miterLimit = 20    // 连接处内角和外角顶点距离
+        // 一般把定义线宽，颜色等属性放在外面，函数只负责画图形。这样可以在外面方便的调节
+
+        for (let i = 0; i < 200; i++) {
+            let r = Math.random() * 10 + 10
+            let x = Math.random() * (canvas.width - r * 2) + r
+            let y = Math.random() * (canvas.height - r * 2) + r
+            let a = Math.random() * 360
+            star(ctx, x, y, r, r / 2, a)
+        }
+    }
+
+    // rot : 顺时针旋转角度
+    function star(ctx, x, y, R, r, rot) {
+        ctx.lineWidth = 3
+        ctx.strokeStyle = '#fd5'
+        ctx.fillStyle = "#fb3"
+
+        ctx.moveTo(x, y - R)
+        ctx.beginPath()
+
+        for (let i = 0; i < 5; i++) {
+            let inAngle = (54 - 72 * i - rot) * Math.PI / 180
+            let outAngle = (18 - 72 * i - rot) * Math.PI / 180
+
+            ctx.lineTo(x + Math.cos(inAngle) * r, y - Math.sin(inAngle) * r)
+            ctx.lineTo(x + Math.cos(outAngle) * R, y - Math.sin(outAngle) * R)
+        }
+        ctx.closePath()
+
+        ctx.fill()
+        ctx.stroke()
+    }
+
+</script>
+
+</body>
+</html>

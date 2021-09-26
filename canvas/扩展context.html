@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>扩展context</title>
+</head>
+<body>
+
+<canvas id="canvas"
+        style="
+            border: 1px solid #aaa;
+            display: block;
+            margin: 50px auto"
+>
+    当前浏览器不支持canvas，请更换浏览器再试
+</canvas>
+
+<script>
+    var canvas = document.getElementById('canvas')
+    canvas.width = 800
+    canvas.height = 800
+    var ctx = canvas.getContext('2d')
+
+    // 先使用moveTo，再使用fillStar直接在此处绘制
+    CanvasRenderingContext2D.prototype.lastMoveToLoc = {}
+    var originalMoveTo = CanvasRenderingContext2D.prototype.moveTo
+
+    CanvasRenderingContext2D.prototype.XXL_moveTo = function(x, y) {
+        originalMoveTo.call(this, x, y)
+        this.lastMoveToLoc.x = x
+        this.lastMoveToLoc.y = y
+    }
+
+    CanvasRenderingContext2D.prototype.XXL_fillStar = function(r, R, rot) {
+        this.beginPath()
+        for (let i = 0; i < 5; i++) {
+            let inAngle = (54 - 72 * i - rot) * Math.PI / 180
+            let outAngle = (18 - 72 * i - rot) * Math.PI / 180
+
+            this.lineTo(
+                this.lastMoveToLoc.x + Math.cos(inAngle) * r,
+                this.lastMoveToLoc.y - Math.sin(inAngle) * r
+            )
+            this.lineTo(
+                this.lastMoveToLoc.x + Math.cos(outAngle) * R,
+                this.lastMoveToLoc.y - Math.sin(outAngle) * R
+            )
+        }
+        this.closePath()
+        this.fill()
+    }
+
+    window.onload = function () {
+
+        ctx.fillStyle = "#058"
+        ctx.XXL_moveTo(400, 400)
+        ctx.XXL_fillStar(150, 300, 20)
+    }
+
+</script>
+
+</body>
+</html>

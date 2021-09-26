@@ -19,11 +19,11 @@
 
 <script>
     var balls = [
-        {x: 512, y: 100, r: 20, g: 1, vx: -4, vy: 0, color: "#005588"},
-        {x: 412, y: 100, r: 20, g: 1, vx: 8, vy: 0, color: "#005588"},
-        {x: 312, y: 70, r: 20, g: 1, vx: -3, vy: 3, color: "#005588"},
-        {x: 212, y: 90, r: 20, g: 1, vx: -6, vy: 0, color: "#005588"},
-        {x: 602, y: 110, r: 20, g: 1, vx: 7, vy: 8, color: "#005588"},
+        {x: 512, y: 120, r: 20, g: 1, vx: -15, vy: 0, color: "red"},
+        {x: 312, y: 70, r: 20, g: 1, vx: 12, vy: 0, color: "green"},
+        {x: 212, y: 90, r: 20, g: 1, vx: -8, vy: 3, color: "#205"},
+        {x: 212, y: 90, r: 20, g: 1, vx: 11, vy: -5, color: "#546"},
+        {x: 602, y: 110, r: 20, g: 1, vx: 12, vy: 3, color: "lightblue"},
         // {x: 500, y: 50, r: 20, g: 1, vx: 10, vy: 0, color: "#005588"},
         // {x: 42, y: 90, r: 20, g: 1, vx: 1, vy: -8, color: "#005588"},
         // {x: 333, y: 77, r: 20, g: 1, vx: -10, vy: 0, color: "#005588"}
@@ -59,6 +59,12 @@
             // console.log(ball.vy)
             if (((ball.y === ctx.canvas.height - ball.r) && Math.abs(ball.vy) < 1.75)) {
                 ball.vy = 0
+                // console.log(Math.abs(ball.vx))
+                if (Math.abs(ball.vx) < 0.3) {
+                    ball.vx = 0
+                } else {
+                    ball.vx +=  0.1 * ball.g * -ball.vx / Math.abs(ball.vx)
+                }
             } else {
                 ball.y += ball.vy
                 ball.vy += ball.g
@@ -83,8 +89,11 @@
                 var anotherBall = balls[j]
                 var deltaX = Math.abs(ball.x - anotherBall.x)
                 var deltaY = Math.abs(ball.y - anotherBall.y)
+                // 小球碰撞
                 if (deltaX ** 2 + deltaY ** 2 <= (ball.r + anotherBall.r) ** 2) {
                     [ball.vx ,anotherBall.vx] = [anotherBall.vx, ball.vx]
+                    // ball.vx = -ball.vx
+                    // anotherBall.vx = -anotherBall.vx
                     // [ball.vy ,anotherBall.vy] = [anotherBall.vy, ball.vy]
                 }
             }

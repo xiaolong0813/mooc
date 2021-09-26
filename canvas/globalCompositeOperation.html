@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GlobalCompositeOperation</title>
+</head>
+<body>
+
+<canvas id="canvas"
+        style="
+            border: 1px solid #aaa;
+            display: block;
+            margin: 50px auto"
+>
+    当前浏览器不支持canvas，请更换浏览器再试
+</canvas>
+
+<div id="buttons" style="display: flex; justify-content: center"></div>
+
+<script>
+    let WIDTH = 600
+    let HEIGHT = 600
+
+    window.onload = function () {
+        var canvas = document.getElementById('canvas')
+        canvas.width = WIDTH
+        canvas.height = HEIGHT
+        var ctx = canvas.getContext('2d')
+
+
+        let buttons = [
+            "source-over", "source-atop", "source-in", "source-out",
+            "destination-over", "destination-atop", "destination-in",
+            "destination-out", "lighter", "copy", "xor"
+        ]
+
+        for (let i = 0; i < buttons.length; i++) {
+            let button = document.createElement("button")
+            button.textContent = buttons[i]
+            button.onclick = btn => {
+                // console.log(btn.target.innerText)
+                draw(ctx, btn.target.innerText)
+                // return false
+            }
+
+            document.getElementById("buttons").appendChild(button)
+        }
+    }
+
+    function draw(ctx, compositeStyle) {
+
+        ctx.clearRect(0, 0, WIDTH, HEIGHT)
+
+        // 保存当前状态。因为每次都会新生成图形。要保持其独立性。使用save restore
+        ctx.save()
+        // draw title
+        ctx.font = "bold 25px Arial"
+        ctx.textAlign = "center"
+        ctx.textBaseline = "middle"
+        ctx.fillStyle = "#058"
+        ctx.fillText("globalCompositeOperation = " + compositeStyle, WIDTH / 2, 40)
+
+        // draw a rect
+        ctx.fillStyle = "blue"
+        ctx.fillRect(150, 150, 300, 300)
+
+        // draw a triangle
+        ctx.globalCompositeOperation = compositeStyle
+        ctx.fillStyle = "red"
+        ctx.beginPath()
+        ctx.moveTo(350, 250)
+        ctx.lineTo(550, 550)
+        ctx.lineTo(150, 550)
+        ctx.closePath()
+        ctx.fill()
+
+        ctx.restore()
+    }
+
+</script>
+
+</body>
+</html>
